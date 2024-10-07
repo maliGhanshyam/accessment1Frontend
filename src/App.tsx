@@ -1,21 +1,14 @@
 import React from "react";
-import Home from "./Home/Home"; 
-import AddCard from "./BlogCards/AddCardForm"; 
-import RecipeReviewCard from "./BlogCards/BlogCard"; 
-import {
-  Routes,
-  Route,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import Home from "./Home/Home";
+import AddCard from "./BlogCards/AddCardForm";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import BlogCard from "./BlogCards/BlogCard";
-import { getAllBlogs } from "./Model/BlogCrud"; // Replace with actual import path
+import { getAllBlogs } from "./Model/BlogCrud";
 import AddCardForm from "./BlogCards/AddCardForm";
 import LoginForm from "./Forms/LoginForm";
 import RegistrationForm from "./Forms/RegistrationForm";
-const cors = require("cors");
+import { isAuthenticated } from "./utils/auth"; // Import the utility function
 
-// Define the routes with loaders
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,10 +32,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/cards",
-    element: <RecipeReviewCard />,
+    element: <BlogCard />,
     loader: async () => {
-      return await getAllBlogs(); // Fetch data before rendering
+      return await getAllBlogs();
     },
+  },
+  {
+    path: "/home",
+    element: isAuthenticated() ? <Home /> : <Navigate to="/cards" />,
   },
 ]);
 
@@ -51,4 +48,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

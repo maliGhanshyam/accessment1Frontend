@@ -8,10 +8,12 @@ import {
   Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import theme from "../MaterialUI/theme"; // Ensure your theme is correctly imported
+import theme from "../MaterialUI/theme";
+import { loginUser } from "../Model/authCrud"; // Import login function
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,11 +24,17 @@ const LoginForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Login data submitted:", formData);
-    // Redirect after login
-    navigate("/dashboard");
+    try {
+      const response = await loginUser(formData.username, formData.password);
+      if (response.token) {
+        console.log("Login successful:", response);
+        navigate("/cards"); // Redirect to dashboard or another authenticated route
+      }
+    } catch (error) {
+      setErrorMessage("Invalid credentials. Please try again.");
+    }
   };
 
   return (
@@ -42,13 +50,13 @@ const LoginForm = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Email"
+              label="Username"
               variant="outlined"
-              name="email"
-              value={formData.email}
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               required
-              type="email"
+              type="text"
             />
           </Grid>
           <Grid item xs={12}>
@@ -63,6 +71,13 @@ const LoginForm = () => {
               type="password"
             />
           </Grid>
+          {errorMessage && (
+            <Grid item xs={12}>
+              <Typography color="error" align="center">
+                {errorMessage}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Login

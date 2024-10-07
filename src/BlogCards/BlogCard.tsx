@@ -6,42 +6,27 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import { useLoaderData } from "react-router-dom";
-import Footer from "../Footer/Footer"; // Import your Footer component
+import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/navbar";
 
 interface CardData {
-  id: number; // or string depending on your data
+  id: number;
   blog_title: string;
   image: string;
   blog_body: string;
 }
+
 const commonImagePath = "./logo512.png";
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme }) => ({
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-  ...(props) => ({
-    transform: props.expand ? "rotate(180deg)" : "rotate(0deg)",
-  }),
-}));
-
-export default function RecipeReviewCard() {
-  const data: CardData[] = useLoaderData() as CardData[]; // Ensure correct typing
+export default function BlogCard() {
+  const data: CardData[] = useLoaderData() as CardData[];
 
   return (
     <>
@@ -69,16 +54,15 @@ export default function RecipeReviewCard() {
                 component="img"
                 height="150"
                 sx={{
-                  objectFit: "contain", // Ensures the entire image is visible and maintains aspect ratio
+                  objectFit: "contain",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  mx: "auto", // Centers the image horizontally
+                  mx: "auto",
                 }}
                 image={commonImagePath}
-                alt={card.blog_title} // Use a descriptive alt text
+                alt={card.blog_title}
               />
-
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
                   {card.blog_body}

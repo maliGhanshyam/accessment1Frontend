@@ -20,8 +20,9 @@ const pages = [
   { name: "Blogs", path: "/cards" },
   { name: "Add Blog", path: "/register" },
   { name: "Login", path: "/login" },
-  { name: "Registration", path: "/userRegistraion" },
+  { name: "Registration", path: "/userRegistration" },
 ];
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
@@ -36,17 +37,28 @@ function ResponsiveAppBar() {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = (path?: string) => {
     setAnchorElNav(null);
-    if (path) navigate(path); // Navigate if path is provided
+    if (path) navigate(path); // Navigate if a path is provided
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting?: string) => {
     setAnchorElUser(null);
+
+    if (setting === "Logout") {
+      logoutUser();
+    }
+  };
+
+  // Logout function that removes the token and redirects to login
+  const logoutUser = () => {
+    sessionStorage.removeItem("token"); // Assuming you store the token in sessionStorage
+    navigate("/login"); // Redirect to login after logout
   };
 
   return (
@@ -116,7 +128,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              Blogger
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -134,7 +146,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -142,10 +154,13 @@ function ResponsiveAppBar() {
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                onClose={() => handleCloseUserMenu()}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleCloseUserMenu(setting)}
+                  >
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
