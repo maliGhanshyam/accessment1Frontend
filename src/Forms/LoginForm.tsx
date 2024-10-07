@@ -8,17 +8,10 @@ import {
   Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import theme from "../MaterialUI/theme"; // Ensure to import your theme
+import theme from "../MaterialUI/theme"; // Ensure your theme is correctly imported
 
-const AddCardForm = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    date: "",
-    description: "",
-    image: "",
-    method: "",
-  });
-
+const LoginForm = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,66 +24,48 @@ const AddCardForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you can send the data to your backend or handle it as needed
-    console.log("Form data submitted:", formData);
-    // Reset the form after submission
-    setFormData({
-      title: "",
-      date: "",
-      description: "",
-      image: "",
-      method: "",
-    });
-    // Redirect to home or another page after submission
-    navigate("/");
+    console.log("Login data submitted:", formData);
+    // Redirect after login
+    navigate("/dashboard");
   };
 
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" align="center" gutterBottom>
-        Add a New Card
+        Login
       </Typography>
       <Avatar sx={{ bgcolor: theme.palette.primary.main, margin: "0 auto" }}>
-        A
+        L
       </Avatar>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} sx={{ marginTop: 2 }}>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Title"
+              label="Email"
               variant="outlined"
-              name="title"
-              value={formData.title}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
+              type="email"
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Description"
+              label="Password"
               variant="outlined"
-              name="description"
-              value={formData.description}
+              name="password"
+              value={formData.password}
               onChange={handleChange}
               required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Method"
-              variant="outlined"
-              name="method"
-              value={formData.method}
-              onChange={handleChange}
-              required
+              type="password"
             />
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Add Card
+              Login
             </Button>
           </Grid>
         </Grid>
@@ -99,4 +74,4 @@ const AddCardForm = () => {
   );
 };
 
-export default AddCardForm;
+export default LoginForm;

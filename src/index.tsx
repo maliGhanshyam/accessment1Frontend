@@ -13,10 +13,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
       {" "}
       {/* Wrap App with BrowserRouter for routing */}
       <App />
-    </BrowserRouter>
   </React.StrictMode>
 );

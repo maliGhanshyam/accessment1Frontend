@@ -1,5 +1,4 @@
-// src/components/ResponsiveAppBar.tsx
-import * as React from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,11 +14,18 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../MaterialUI/theme";
+import { useNavigate } from "react-router-dom";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = [
+  { name: "Blogs", path: "/cards" },
+  { name: "Add Blog", path: "/register" },
+  { name: "Login", path: "/login" },
+  { name: "Registration", path: "/userRegistraion" },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -34,8 +40,9 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (path?: string) => {
     setAnchorElNav(null);
+    if (path) navigate(path); // Navigate if path is provided
   };
 
   const handleCloseUserMenu = () => {
@@ -45,8 +52,6 @@ function ResponsiveAppBar() {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static" color="primary">
-        {" "}
-        {/* Use primary color */}
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -61,11 +66,11 @@ function ResponsiveAppBar() {
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit", // Keep inherit to use AppBar text color
+                color: "inherit",
                 textDecoration: "none",
               }}
             >
-           Blogger
+              Blogger
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -81,12 +86,15 @@ function ResponsiveAppBar() {
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
+                onClose={() => handleCloseNavMenu()}
                 sx={{ display: { xs: "block", md: "none" } }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem
+                    key={page.name}
+                    onClick={() => handleCloseNavMenu(page.path)}
+                  >
+                    <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -114,11 +122,11 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }} // Keep text color white on primary
+                  key={page.name}
+                  onClick={() => handleCloseNavMenu(page.path)}
+                  sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page}
+                  {page.name}
                 </Button>
               ))}
             </Box>

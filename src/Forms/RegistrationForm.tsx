@@ -8,17 +8,14 @@ import {
   Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import theme from "../MaterialUI/theme"; // Ensure to import your theme
+import theme from "../MaterialUI/theme"; // Ensure your theme is correctly imported
 
-const AddCardForm = () => {
+const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    title: "",
-    date: "",
-    description: "",
-    image: "",
-    method: "",
+    name: "",
+    email: "",
+    password: "",
   });
-
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,37 +28,28 @@ const AddCardForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you can send the data to your backend or handle it as needed
-    console.log("Form data submitted:", formData);
-    // Reset the form after submission
-    setFormData({
-      title: "",
-      date: "",
-      description: "",
-      image: "",
-      method: "",
-    });
-    // Redirect to home or another page after submission
-    navigate("/");
+    console.log("Registration data submitted:", formData);
+    // Redirect after registration
+    navigate("/login");
   };
 
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" align="center" gutterBottom>
-        Add a New Card
+        Register
       </Typography>
       <Avatar sx={{ bgcolor: theme.palette.primary.main, margin: "0 auto" }}>
-        A
+        R
       </Avatar>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} sx={{ marginTop: 2 }}>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Title"
+              label="Name"
               variant="outlined"
-              name="title"
-              value={formData.title}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -69,28 +57,30 @@ const AddCardForm = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Description"
+              label="Email"
               variant="outlined"
-              name="description"
-              value={formData.description}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
+              type="email"
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Method"
+              label="Password"
               variant="outlined"
-              name="method"
-              value={formData.method}
+              name="password"
+              value={formData.password}
               onChange={handleChange}
               required
+              type="password"
             />
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Add Card
+              Register
             </Button>
           </Grid>
         </Grid>
@@ -99,4 +89,4 @@ const AddCardForm = () => {
   );
 };
 
-export default AddCardForm;
+export default RegistrationForm;
