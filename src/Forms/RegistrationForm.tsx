@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { register } from "../Model/authCrud";
 import {
   Button,
   TextField,
@@ -8,11 +9,12 @@ import {
   Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import theme from "../MaterialUI/theme"; // Ensure your theme is correctly imported
+import theme from "../MaterialUI/theme";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    _id: 0,
+    username: "",
     email: "",
     password: "",
   });
@@ -28,10 +30,15 @@ const RegistrationForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Registration data submitted:", formData);
-    // Redirect after registration
-    navigate("/login");
+    registerForm();
   };
+  async function registerForm() {
+    const data = await register(formData);
+    if (data != null) {
+      window.alert(`user registered successfully.....`);
+      navigate("/login");
+    } else window.alert("Error during registration");
+  }
 
   return (
     <Container maxWidth="sm">
@@ -46,12 +53,25 @@ const RegistrationForm = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Name"
+              label="Id"
               variant="outlined"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              name="_id"
+              value={formData._id}
               required
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="User Name"
+              variant="outlined"
+              name="username"
+              value={formData.username}
+              required
+              onChange={handleChange}
+              type="text"
             />
           </Grid>
           <Grid item xs={12}>
@@ -61,8 +81,8 @@ const RegistrationForm = () => {
               variant="outlined"
               name="email"
               value={formData.email}
-              onChange={handleChange}
               required
+              onChange={handleChange}
               type="email"
             />
           </Grid>
@@ -73,8 +93,8 @@ const RegistrationForm = () => {
               variant="outlined"
               name="password"
               value={formData.password}
-              onChange={handleChange}
               required
+              onChange={handleChange}
               type="password"
             />
           </Grid>

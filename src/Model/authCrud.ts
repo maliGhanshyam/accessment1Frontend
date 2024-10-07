@@ -1,4 +1,5 @@
 // src/Model/authCrud.ts
+import axios from "axios";
 const API_URL = "http://localhost:5000";
 
 export const loginUser = async (username: string, password: string) => {
@@ -34,3 +35,8 @@ export const logoutUser = () => {
 export const getToken = () => {
   return sessionStorage.getItem("token"); 
 };
+
+export async function register(user: object) {
+  const res = await axios.post(`${API_URL}/auth/register`, user);
+  return res;
+}

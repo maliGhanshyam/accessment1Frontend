@@ -10,6 +10,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import theme from "../MaterialUI/theme";
 import { loginUser } from "../Model/authCrud"; // Import login function
+import Navbar from "../Navbar/navbar";
+
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -38,54 +41,62 @@ const LoginForm = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" align="center" gutterBottom>
-        Login
-      </Typography>
-      <Avatar sx={{ bgcolor: theme.palette.primary.main, margin: "0 auto" }}>
-        L
-      </Avatar>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} sx={{ marginTop: 2 }}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Username"
-              variant="outlined"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-              type="text"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Password"
-              variant="outlined"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              type="password"
-            />
-          </Grid>
-          {errorMessage && (
+    <>
+      <Navbar></Navbar>{" "}
+      <Container maxWidth="sm">
+        <Typography variant="h4" align="center" gutterBottom>
+          Login
+        </Typography>
+        <Avatar sx={{ bgcolor: theme.palette.primary.main, margin: "0 auto" }}>
+          L
+        </Avatar>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2} sx={{ marginTop: 2 }}>
             <Grid item xs={12}>
-              <Typography color="error" align="center">
-                {errorMessage}
-              </Typography>
+              <TextField
+                fullWidth
+                label="Username"
+                variant="outlined"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                type="text"
+              />
             </Grid>
-          )}
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Login
-            </Button>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Password"
+                variant="outlined"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                type="password"
+              />
+            </Grid>
+            {errorMessage && (
+              <Grid item xs={12}>
+                <Typography color="error" align="center">
+                  {errorMessage}
+                </Typography>
+              </Grid>
+            )}
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Login
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
-    </Container>
+        </form>
+      </Container>
+    </>
   );
 };
 

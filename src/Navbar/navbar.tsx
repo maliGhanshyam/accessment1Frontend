@@ -19,13 +19,13 @@ import { useNavigate } from "react-router-dom";
 const pages = [
   { name: "Blogs", path: "/cards" },
   { name: "Add Blog", path: "/register" },
-  { name: "Login", path: "/login" },
-  { name: "Registration", path: "/userRegistration" },
+  { name: "Login", path: "/login" }, // We'll conditionally render this
+  { name: "Registration", path: "/userRegistraion" },
 ];
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function ResponsiveAppBar() {
+function Navbar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -33,6 +33,9 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  // Check if the user is logged in
+  const isLoggedIn = Boolean(sessionStorage.getItem("token"));
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -57,7 +60,7 @@ function ResponsiveAppBar() {
 
   // Logout function that removes the token and redirects to login
   const logoutUser = () => {
-    sessionStorage.removeItem("token"); // Assuming you store the token in sessionStorage
+    sessionStorage.removeItem("token");
     navigate("/login"); // Redirect to login after logout
   };
 
@@ -101,14 +104,17 @@ function ResponsiveAppBar() {
                 onClose={() => handleCloseNavMenu()}
                 sx={{ display: { xs: "block", md: "none" } }}
               >
-                {pages.map((page) => (
-                  <MenuItem
-                    key={page.name}
-                    onClick={() => handleCloseNavMenu(page.path)}
-                  >
-                    <Typography textAlign="center">{page.name}</Typography>
-                  </MenuItem>
-                ))}
+                {/* Conditionally render the Login page based on the user's login state */}
+                {pages
+                  .filter((page) => !(page.name === "Login" && isLoggedIn))
+                  .map((page) => (
+                    <MenuItem
+                      key={page.name}
+                      onClick={() => handleCloseNavMenu(page.path)}
+                    >
+                      <Typography textAlign="center">{page.name}</Typography>
+                    </MenuItem>
+                  ))}
               </Menu>
             </Box>
 
@@ -132,15 +138,17 @@ function ResponsiveAppBar() {
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page.name}
-                  onClick={() => handleCloseNavMenu(page.path)}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.name}
-                </Button>
-              ))}
+              {pages
+                .filter((page) => !(page.name === "Login" && isLoggedIn))
+                .map((page) => (
+                  <Button
+                    key={page.name}
+                    onClick={() => handleCloseNavMenu(page.path)}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.name}
+                  </Button>
+                ))}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
@@ -173,4 +181,4 @@ function ResponsiveAppBar() {
   );
 }
 
-export default ResponsiveAppBar;
+export default Navbar;

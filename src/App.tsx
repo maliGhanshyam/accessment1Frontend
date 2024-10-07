@@ -39,7 +39,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: isAuthenticated() ? <Home /> : <Navigate to="/cards" />,
+    element: isAuthenticated() ? <Home /> : < Navigate to="/login" />,
   },
 ]);
 
