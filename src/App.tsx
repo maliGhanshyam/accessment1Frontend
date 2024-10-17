@@ -1,14 +1,16 @@
 import React from "react";
-import Home from "./Home/Home";
-import AddCard from "./BlogCards/AddCardForm";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-import BlogCard from "./BlogCards/BlogCard";
-import { getAllBlogs } from "./Model/BlogCrud";
-import AddCardForm from "./BlogCards/AddCardForm";
-import LoginForm from "./Forms/LoginForm";
-import RegistrationForm from "./Forms/RegistrationForm";
-import { isAuthenticated } from "./utils/auth"; // Import the utility function
-import { getBlogById } from "./Model/BlogCrud";
+import Home from "./Components/Home/Home";
+import AddCardForm from "./Components/BlogCards/AddCardForm";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import BlogCard from "./Components/BlogCards/BlogCard";
+import { getAllBlogs, getBlogById } from "./Model/BlogCrud";
+import LoginForm from "./Components/Forms/LoginForm";
+import RegistrationForm from "./Components/Forms/RegistrationForm";
+import { isAuthenticated } from "./utils/auth";
 
 const router = createBrowserRouter([
   {
@@ -16,19 +18,15 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/add",
-    element: <AddCard />,
-  },
-  {
-    path: "/register",
-    element: <AddCardForm />,
+    path: "/addBlog",
+    element: isAuthenticated() ? <AddCardForm /> : <Navigate to="/login" />,
   },
   {
     path: "/login",
     element: <LoginForm />,
   },
   {
-    path: "/userRegistraion",
+    path: "/userRegistration", // Corrected typo here
     element: <RegistrationForm />,
   },
   {
@@ -47,12 +45,19 @@ const router = createBrowserRouter([
     element: <AddCardForm />,
     loader: async ({ params }) => {
       try {
-        const blog = await getBlogById(Number(params._id)); // Convert params.id to number if it's expected to be a number
-        console.log("Loaded Blog Data: ", blog); // Check if the data is correctly loaded
-        return { ...blog, _id: blog._id }; // Return the blog object with id property
+        const id = params._id ? Number(params._id) : null; // Ensure params._id is defined and convert to number
+
+        if (!id) {
+          throw new Error("Invalid blog ID");
+        }
+
+        const blog = await getBlogById(id); // Call the function with a valid number
+
+        console.log("Loaded Blog Data: ", blog);
+        return { ...blog, _id: blog._id }; // Return the blog object
       } catch (error) {
         console.error("Error loading blog:", error);
-        throw error; // Handle or rethrow the error as needed
+        throw error; // Handle the error
       }
     },
   },

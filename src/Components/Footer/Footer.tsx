@@ -2,7 +2,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../MaterialUI/theme";
+import theme from "../../MaterialUI/theme";
 
 const Footer: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
           color: "white",
           p: 2,
           textAlign: "center",
-        //  position: "fixed", // Fixes the footer at the bottom
+         position: "fixed", // Fixes the footer at the bottom
           left: 0,
           right: 0,
           bottom: 0,

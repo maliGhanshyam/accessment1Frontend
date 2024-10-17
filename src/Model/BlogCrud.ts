@@ -2,7 +2,11 @@ import axios from "axios";
 import { getToken } from "./authCrud"; // Import the function that retrieves the token
 import { IBlog } from "../Model/Blog"; // Import the frontend IBlog interface
 
-const url = "http://localhost:5000/blogs";
+// const url = "http://localhost:5000/blogs";
+const API_URL = process.env.REACT_APP_API_URL;
+const url = `${API_URL}/blogs`;
+
+console.log("Blog URL", url);
 
 export async function getAllBlogs() {
   const token = getToken(); // Get the token from session storage

@@ -13,17 +13,18 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../MaterialUI/theme";
+import theme from "../../MaterialUI/theme";
 import { useNavigate } from "react-router-dom";
 
 const pages = [
   { name: "Blogs", path: "/cards" },
-  { name: "Add Blog", path: "/register" },
+  { name: "Add Blog", path: "/addBlog" },
   { name: "Login", path: "/login" }, // We'll conditionally render this
   { name: "Registration", path: "/userRegistraion" },
 ];
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Logout"];
 
 function Navbar() {
   const navigate = useNavigate();
@@ -106,7 +107,15 @@ function Navbar() {
               >
                 {/* Conditionally render the Login page based on the user's login state */}
                 {pages
-                  .filter((page) => !(page.name === "Login" && isLoggedIn))
+                  .filter(
+                    (page) =>
+                      !(
+                        isLoggedIn &&
+                        (page.name === "Login" ||
+                          page.name === "Registration") &&
+                        isLoggedIn
+                      )
+                  )
                   .map((page) => (
                     <MenuItem
                       key={page.name}
@@ -139,7 +148,14 @@ function Navbar() {
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages
-                .filter((page) => !(page.name === "Login" && isLoggedIn))
+                .filter(
+                  (page) =>
+                    !(
+                      isLoggedIn &&
+                      (page.name === "Login" || page.name === "Registration") &&
+                      isLoggedIn
+                    )
+                )
                 .map((page) => (
                   <Button
                     key={page.name}
@@ -151,29 +167,34 @@ function Navbar() {
                 ))}
             </Box>
 
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                open={Boolean(anchorElUser)}
-                onClose={() => handleCloseUserMenu()}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={() => handleCloseUserMenu(setting)}
-                  >
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+            {isLoggedIn && (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="User Avatar"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  open={Boolean(anchorElUser)}
+                  onClose={() => handleCloseUserMenu()}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleCloseUserMenu(setting)}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Navbar></Navbar>
-      <BlogCard></BlogCard>
+      <BlogCard ></BlogCard>
       <Footer></Footer>
     </>
   );

@@ -1,7 +1,8 @@
 // src/Model/authCrud.ts
 import axios from "axios";
-const API_URL = "http://localhost:5000";
-
+//const API_URL = "http://localhost:5000"; //TODO:
+const API_URL = process.env.REACT_APP_API_URL;
+console.log("API URL:", API_URL);
 export const loginUser = async (username: string, password: string) => {
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
