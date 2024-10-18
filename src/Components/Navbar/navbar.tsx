@@ -20,7 +20,7 @@ const pages = [
   { name: "Blogs", path: "/cards" },
   { name: "Add Blog", path: "/addBlog" },
   { name: "Login", path: "/login" }, // We'll conditionally render this
-  { name: "Registration", path: "/userRegistraion" },
+  { name: "Registration", path: "/userRegistration" },
 ];
 
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import theme from "../../MaterialUI/theme";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/navbar";
+import { Form, Formik } from "formik";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -31,8 +32,18 @@ const RegistrationForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   registerForm();
+  // };
+  interface FormData {
+    _id: number;
+    username: string;
+    email: string;
+    password: string;
+  }
+  const handleSubmit = async (data: FormData) => {
+    setFormData(data);
     registerForm();
   };
   async function registerForm() {
@@ -52,75 +63,85 @@ const RegistrationForm = () => {
             variant="h4"
             align="center"
             gutterBottom
-            sx={{ color: "primary.main", margin: 2, fontWeight:"bold"}}
+            sx={{ color: "primary.main", margin: 2, fontWeight: "bold" }}
           >
             Register
           </Typography>
           {/* <Avatar sx={{ bgcolor: theme.palette.primary.main, margin: "0 auto" }}>
           R
         </Avatar> */}
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2} sx={{ marginTop: 2 }}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Id"
-                  variant="outlined"
-                  name="_id"
-                  value={formData._id}
-                  required
-                  onChange={handleChange}
-                  type="number"
-                />
+          <Formik
+            initialValues={{
+              _id: 0,
+              username: "",
+              email: "",
+              password: "",
+            }}
+            onSubmit={handleSubmit}
+          >
+            <Form>
+              <Grid container spacing={2} sx={{ marginTop: 2 }}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Id"
+                    variant="outlined"
+                    name="_id"
+                    value={formData._id}
+                    required
+                    onChange={handleChange}
+                    type="number"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="User Name"
+                    variant="outlined"
+                    name="username"
+                    value={formData.username}
+                    required
+                    onChange={handleChange}
+                    type="text"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    variant="outlined"
+                    name="email"
+                    value={formData.email}
+                    required
+                    onChange={handleChange}
+                    type="email"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Password"
+                    variant="outlined"
+                    name="password"
+                    value={formData.password}
+                    required
+                    onChange={handleChange}
+                    type="password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Register
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="User Name"
-                  variant="outlined"
-                  name="username"
-                  value={formData.username}
-                  required
-                  onChange={handleChange}
-                  type="text"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  variant="outlined"
-                  name="email"
-                  value={formData.email}
-                  required
-                  onChange={handleChange}
-                  type="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Password"
-                  variant="outlined"
-                  name="password"
-                  value={formData.password}
-                  required
-                  onChange={handleChange}
-                  type="password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                >
-                  Register
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
+            </Form>
+          </Formik>
         </Container>
         <Footer></Footer>
       </>

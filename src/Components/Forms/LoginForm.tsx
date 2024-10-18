@@ -24,8 +24,16 @@ const LoginForm = () => {
   }
   // Validation schema using Yup
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
-    password: Yup.string().required("Password is required"),
+    username: Yup.string()
+      .required("Username is required")
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
   });
   // const [formData, setFormData] = useState({ username: "", password: "" });
   // const [errorMessage, setErrorMessage] = useState<string | null>(null);
